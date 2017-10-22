@@ -3,18 +3,34 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3D Graphing", "3D Graphing\3D Graphing.csproj", "{7B01085D-A022-4EC0-862F-FDEBD4976859}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3D Graphing GUI", "3D Graphing\3D Graphing GUI.csproj", "{7B01085D-A022-4EC0-862F-FDEBD4976859}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3D Graphing Calculator", "3D Graphing Calculator\3D Graphing Calculator.csproj", "{988A81D9-582D-421C-A1BE-9671F5BCAAE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7B01085D-A022-4EC0-862F-FDEBD4976859}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7B01085D-A022-4EC0-862F-FDEBD4976859}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B01085D-A022-4EC0-862F-FDEBD4976859}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7B01085D-A022-4EC0-862F-FDEBD4976859}.Debug|x64.Build.0 = Debug|Any CPU
 		{7B01085D-A022-4EC0-862F-FDEBD4976859}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B01085D-A022-4EC0-862F-FDEBD4976859}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B01085D-A022-4EC0-862F-FDEBD4976859}.Release|x64.ActiveCfg = Release|Any CPU
+		{7B01085D-A022-4EC0-862F-FDEBD4976859}.Release|x64.Build.0 = Release|Any CPU
+		{988A81D9-582D-421C-A1BE-9671F5BCAAE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{988A81D9-582D-421C-A1BE-9671F5BCAAE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{988A81D9-582D-421C-A1BE-9671F5BCAAE4}.Debug|x64.ActiveCfg = Debug|x64
+		{988A81D9-582D-421C-A1BE-9671F5BCAAE4}.Debug|x64.Build.0 = Debug|x64
+		{988A81D9-582D-421C-A1BE-9671F5BCAAE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{988A81D9-582D-421C-A1BE-9671F5BCAAE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{988A81D9-582D-421C-A1BE-9671F5BCAAE4}.Release|x64.ActiveCfg = Release|x64
+		{988A81D9-582D-421C-A1BE-9671F5BCAAE4}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

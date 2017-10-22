@@ -63,9 +63,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Projector.cs" />
     <Compile Include="GraphingEventArgs.cs" />
-    <Compile Include="FunctionManager.cs" />
     <Compile Include="InputWindow.xaml.cs">
       <DependentUpon>InputWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -103,6 +101,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\3D Graphing Calculator\3D Graphing Calculator.csproj">
+      <Project>{988a81d9-582d-421c-a1be-9671f5bcaae4}</Project>
+      <Name>3D Graphing Calculator</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -65,28 +65,31 @@ namespace _3D_Graphing
             double Range = Math.Sqrt((X2 - X1) * (X2 - X1) + (Y2 - Y1) * (Y2 - Y1));
             foreach (Vector2[] points in FunctionManager.KeyPoints(function, X1, X2, Y1, Y2, step))
             {
-                Grid.Children.Add(new Line()
+                if (Math.Abs(points[0].Y) < 1000 && Math.Abs(points[1].Y) < 1000 && Math.Abs(points[2].Y) < 1000 && Math.Abs(points[3].Y) < 1000)
                 {
-                    X1 = 250 + 400 * (points[0].X) / Range,
-                    X2 = 250 + 400 * (points[1].X) / Range,
-                    Y1 = 250 + 400 * (points[0].Y) / Range,
-                    Y2 = 250 + 400 * (points[1].Y) / Range,
-                    Stroke = Brushes.Black,
-                    StrokeThickness = 1,
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    VerticalAlignment = VerticalAlignment.Top
-                });
-                Grid.Children.Add(new Line()
-                {
-                    X1 = 250 + 400 * (points[2].X) / Range,
-                    X2 = 250 + 400 * (points[3].X) / Range,
-                    Y1 = 250 + 400 * (points[2].Y) / Range,
-                    Y2 = 250 + 400 * (points[3].Y) / Range,
-                    Stroke = Brushes.Black,
-                    StrokeThickness = 1,
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    VerticalAlignment = VerticalAlignment.Top
-                });
+                    Grid.Children.Add(new Line()
+                    {
+                        X1 = 250 + 400 * (points[0].X) / Range,
+                        X2 = 250 + 400 * (points[1].X) / Range,
+                        Y1 = 250 + 400 * (points[0].Y) / Range,
+                        Y2 = 250 + 400 * (points[1].Y) / Range,
+                        Stroke = Brushes.Black,
+                        StrokeThickness = 1,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Top
+                    });
+                    Grid.Children.Add(new Line()
+                    {
+                        X1 = 250 + 400 * (points[2].X) / Range,
+                        X2 = 250 + 400 * (points[3].X) / Range,
+                        Y1 = 250 + 400 * (points[2].Y) / Range,
+                        Y2 = 250 + 400 * (points[3].Y) / Range,
+                        Stroke = Brushes.Black,
+                        StrokeThickness = 1,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Top
+                    });
+                }
             }
         }
     }
