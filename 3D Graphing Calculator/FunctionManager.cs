@@ -15,10 +15,10 @@ namespace _3D_Graphing
                 {
                    pointArrays.Add(Projector.Project(new Vector3[4]
                     {
-                        new Vector3(x + step, y, -MathParser.Evaluate(x + step, y,function )),
-                        new Vector3(x - step, y, -MathParser.Evaluate(x - step, y,function)),
-                        new Vector3(x, y + step, -MathParser.Evaluate(x, y + step,function)),
-                        new Vector3(x, y - step, -MathParser.Evaluate(x, y - step,function))
+                        new Vector3(x + step, y, -MathParser.Parse(x + step, y,function)),
+                        new Vector3(x - step, y, -MathParser.Parse(x - step, y,function)),
+                        new Vector3(x, y + step, -MathParser.Parse(x, y + step,function)),
+                        new Vector3(x, y - step, -MathParser.Parse(x, y - step,function))
                     }
                     ));
                 }
