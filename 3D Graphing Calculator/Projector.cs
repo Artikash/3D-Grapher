@@ -11,15 +11,10 @@ namespace _3D_Graphing
     {
         public static Quaternion rotation = Quaternion.Identity;
 
-        public static Vector2[] Project(Vector3[] points)
+        public static Vector2 Project(Vector3 point)
         {
-            List<Vector2> projectedPoints = new List<Vector2>();
-            foreach (Vector3 point in points)
-            {
-                Vector3 transformedPoint = Vector3.Transform(point,rotation);
-                projectedPoints.Add(new Vector2(0.866f * (-transformedPoint.X + transformedPoint.Y), transformedPoint.Z + 0.5f * (transformedPoint.X + transformedPoint.Y)));
-            }
-            return projectedPoints.ToArray();
+            Vector3 transformedPoint = Vector3.Transform(point,rotation);        
+            return new Vector2(0.866f * (-transformedPoint.X + transformedPoint.Y), transformedPoint.Z + 0.5f * (transformedPoint.X + transformedPoint.Y));
         }
     }
 }

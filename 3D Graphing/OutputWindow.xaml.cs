@@ -12,6 +12,8 @@ namespace _3D_Graphing
     /// </summary>
     public partial class OutputWindow : Window
     {
+        Vector3[][] rawKeyPoints = null;
+        string prevFunction = "";
         public OutputWindow()
         {
             InitializeComponent();
@@ -21,21 +23,20 @@ namespace _3D_Graphing
         {
             Projector.rotation = Quaternion.CreateFromAxisAngle(new Vector3(0, 0, 1), angle);
             Grid.Children.Clear();
-            Vector2[] axes = Projector.Project(new Vector3[6] {
-                new Vector3(0, 0, 10),
-                new Vector3(0, 0, -10),
-                new Vector3(0, 10, 0),
-                new Vector3(0, -10, 0),
-                new Vector3(10, 0, 0),
-                new Vector3(-10, 0, 0) }
-            );
+            Vector2[] axes = new Vector2[6] {
+                Projector.Project(new Vector3(0, 0, 10)),
+                Projector.Project(new Vector3(0, 0, -10)),
+                Projector.Project(new Vector3(0, 10, 0)),
+                Projector.Project(new Vector3(0, -10, 0)),
+                Projector.Project(new Vector3(10, 0, 0)),
+                Projector.Project(new Vector3(-10, 0, 0)) };
             Grid.Children.Add(new Line()
             {
                 X1 = 250 + 200 * axes[0].X,
                 X2 = 250 + 200 * axes[1].X,
                 Y1 = 250 + 200 * axes[0].Y,
                 Y2 = 250 + 200 * axes[1].Y,
-                Stroke = Brushes.Gray,
+                Stroke = Brushes.Blue,
                 StrokeThickness = 3,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top
@@ -46,7 +47,7 @@ namespace _3D_Graphing
                 X2 = 250 + 300 * axes[3].X,
                 Y1 = 250 + 300 * axes[2].Y,
                 Y2 = 250 + 300 * axes[3].Y,
-                Stroke = Brushes.Gray,
+                Stroke = Brushes.Red,
                 StrokeThickness = 3,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top
@@ -57,14 +58,26 @@ namespace _3D_Graphing
                 X2 = 250 + 300 * axes[5].X,
                 Y1 = 250 + 300 * axes[4].Y,
                 Y2 = 250 + 300 * axes[5].Y,
-                Stroke = Brushes.Gray,
+                Stroke = Brushes.Green,
                 StrokeThickness = 3,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top
             });
             double Range = Math.Sqrt((X2 - X1) * (X2 - X1) + (Y2 - Y1) * (Y2 - Y1));
-            foreach (Vector2[] points in FunctionManager.KeyPoints(function, X1, X2, Y1, Y2, step))
+            if (rawKeyPoints == null || prevFunction != function)
             {
+                rawKeyPoints = FunctionManager.KeyPoints(function, X1, X2, Y1, Y2, step);
+            }
+            prevFunction = function;
+            foreach (Vector3[] rawPoints in rawKeyPoints)
+            {
+                Vector2[] points = new Vector2[4]
+                {
+                    Projector.Project(rawPoints[0]),
+                    Projector.Project(rawPoints[1]),
+                    Projector.Project(rawPoints[2]),
+                    Projector.Project(rawPoints[3]),
+                };
                 if (Math.Abs(points[0].Y) < 1000 && Math.Abs(points[1].Y) < 1000 && Math.Abs(points[2].Y) < 1000 && Math.Abs(points[3].Y) < 1000)
                 {
                     Grid.Children.Add(new Line()
