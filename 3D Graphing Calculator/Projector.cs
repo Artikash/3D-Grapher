@@ -7,7 +7,7 @@ using System.Numerics;
 
 namespace _3D_Graphing
 {
-    public static class Projector
+    public static class Projector // Singleton that maps 3D to 2D for graphing
     {
         public static Quaternion rotation = Quaternion.Identity;
 

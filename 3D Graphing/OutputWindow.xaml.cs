@@ -19,7 +19,7 @@ namespace _3D_Graphing
             InitializeComponent();
         }
 
-        public void Render(string function, float X1, float X2, float Y1, float Y2, float step, float angle)
+        public void Render(string function, float X1, float X2, float Y1, float Y2, float step, float angle) // Render the graph of the function.
         {
             Projector.rotation = Quaternion.CreateFromAxisAngle(new Vector3(0, 0, 1), angle);
             Grid.Children.Clear();
@@ -62,14 +62,13 @@ namespace _3D_Graphing
                 StrokeThickness = 3,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top
-            });
-            double Range = Math.Sqrt((X2 - X1) * (X2 - X1) + (Y2 - Y1) * (Y2 - Y1));
+            }); // Everything before here was just to draw the axes.
             if (rawKeyPoints == null || prevFunction != function)
             {
-                rawKeyPoints = FunctionManager.KeyPoints(function, X1, X2, Y1, Y2, step);
+                rawKeyPoints = FunctionManager.KeyPoints(function, X1, X2, Y1, Y2, step); // Don't recalculate the keypoints if the function is the same!
             }
             prevFunction = function;
-            foreach (Vector3[] rawPoints in rawKeyPoints)
+            foreach (Vector3[] rawPoints in rawKeyPoints) // This loop draws the function itself.
             {
                 Vector2[] points = new Vector2[4]
                 {
@@ -82,10 +81,10 @@ namespace _3D_Graphing
                 {
                     Grid.Children.Add(new Line()
                     {
-                        X1 = 250 + 400 * (points[0].X) / Range,
-                        X2 = 250 + 400 * (points[1].X) / Range,
-                        Y1 = 250 + 400 * (points[0].Y) / Range,
-                        Y2 = 250 + 400 * (points[1].Y) / Range,
+                        X1 = 250 + 100 * (points[0].X),
+                        X2 = 250 + 100 * (points[1].X),
+                        Y1 = 250 + 100 * (points[0].Y),
+                        Y2 = 250 + 100 * (points[1].Y),
                         Stroke = Brushes.Black,
                         StrokeThickness = 1,
                         HorizontalAlignment = HorizontalAlignment.Left,
@@ -93,10 +92,10 @@ namespace _3D_Graphing
                     });
                     Grid.Children.Add(new Line()
                     {
-                        X1 = 250 + 400 * (points[2].X) / Range,
-                        X2 = 250 + 400 * (points[3].X) / Range,
-                        Y1 = 250 + 400 * (points[2].Y) / Range,
-                        Y2 = 250 + 400 * (points[3].Y) / Range,
+                        X1 = 250 + 100 * (points[2].X),
+                        X2 = 250 + 100 * (points[3].X),
+                        Y1 = 250 + 100 * (points[2].Y),
+                        Y2 = 250 + 100 * (points[3].Y),
                         Stroke = Brushes.Black,
                         StrokeThickness = 1,
                         HorizontalAlignment = HorizontalAlignment.Left,
