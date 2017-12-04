@@ -26,6 +26,15 @@ namespace _3D_Graphing
 
         private void Draw(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                MathParser.Parse(Convert.ToSingle(MinX.Text), Convert.ToSingle(MinY.Text), Equation.Text);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Invalid Equation", "Invalid Equation", MessageBoxButton.OK,MessageBoxImage.Error);
+                return;
+            }
             DrawButtonClicked(this, new GraphingEventArgs(
            (float)Angle.Value, Equation.Text, Convert.ToSingle(MinX.Text), Convert.ToSingle(MaxX.Text), Convert.ToSingle(MinY.Text), Convert.ToSingle(MaxY.Text), Convert.ToSingle(Step.Text)));
         }
