@@ -24,9 +24,15 @@ namespace _3D_Graphing
             input.Show();
             input.Left = 0;
             input.DrawButtonClicked += new EventHandler<GraphingEventArgs>(Draw);
+            input.ClearButtonClicked += new EventHandler(Clear);
             output = new OutputWindow();
             output.Left = 600;
             output.Show();
+        }
+
+        private void Clear(object sender, EventArgs e)
+        {
+            output.Grid.Children.RemoveRange(6,int.MaxValue);
         }
 
         private void Draw(object sender, GraphingEventArgs e)
@@ -42,7 +48,6 @@ namespace _3D_Graphing
         {
             var Grid = output.Grid;
             Projector.rotation = Quaternion.CreateFromAxisAngle(new Vector3(0, 0, 1), angle);
-            Grid.Children.Clear();
             Vector2[] axes = new Vector2[6] {
                 Projector.Project(new Vector3(0, 0, 10)),
                 Projector.Project(new Vector3(0, 0, -10)),
@@ -83,10 +88,9 @@ namespace _3D_Graphing
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top
             }); // Everything before here was just to draw the axes.
-            if (rawKeyPoints == null || prevFunction != function)
-            {
-                rawKeyPoints = FunctionManager.KeyPoints(function, X1, X2, Y1, Y2, step); // Don't recalculate the keypoints if the function is the same!
-            }
+
+            rawKeyPoints = FunctionManager.KeyPoints(function, X1, X2, Y1, Y2, step); 
+
             prevFunction = function;
             foreach (Vector3[] rawPoints in rawKeyPoints) // This loop draws the function itself.
             {

@@ -12,6 +12,8 @@ namespace _3D_Graphing
     /// </summary>
     public partial class InputWindow : Window
     {
+        public event EventHandler ClearButtonClicked;
+
         public event EventHandler<GraphingEventArgs> DrawButtonClicked;
 
         public InputWindow()
@@ -37,6 +39,11 @@ namespace _3D_Graphing
             }
             DrawButtonClicked(this, new GraphingEventArgs(
            (float)Angle.Value, Equation.Text, Convert.ToSingle(MinX.Text), Convert.ToSingle(MaxX.Text), Convert.ToSingle(MinY.Text), Convert.ToSingle(MaxY.Text), Convert.ToSingle(Step.Text)));
+        }
+
+        private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            ClearButtonClicked(this,EventArgs.Empty);
         }
     }
 }

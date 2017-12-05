@@ -78,6 +78,7 @@ namespace _3D_Graphing
                 { "sh", Sh },
                 { "ch", Ch },
                 { "th", Th },
+                { "ln", Ln },
                 { "log", Log },
                 { "exp", Exp },
                 { "abs", Abs }
