@@ -31,7 +31,6 @@ namespace _3D_Graphing
 
         private void Draw(object sender, GraphingEventArgs e)
         {
-            System.Diagnostics.Trace.WriteLine(e);
             Render(e.function,e.minX,e.maxX,e.minY,e.maxY,e.step,e.angle);
         }
 
@@ -40,7 +39,7 @@ namespace _3D_Graphing
             var Grid = output.Grid;
             Grid.Children.Clear();
             Projector.rotation = Quaternion.CreateFromAxisAngle(new Vector3(0, 0, 1), angle);
-            Vector2[] axes = new Vector2[6] {
+            Vector3[] axes = new Vector3[6] { // This code draws the axes.
                 Projector.Project(new Vector3(0, 0, 10)),
                 Projector.Project(new Vector3(0, 0, -10)),
                 Projector.Project(new Vector3(0, 10, 0)),
@@ -85,7 +84,7 @@ namespace _3D_Graphing
 
             foreach (Vector3[] rawPoints in rawKeyPoints) // This loop draws the function itself.
             {
-                Vector2[] points = new Vector2[4]
+                Vector3[] points = new Vector3[4]
                 {
                     Projector.Project(rawPoints[0]),
                     Projector.Project(rawPoints[1]),
@@ -102,6 +101,7 @@ namespace _3D_Graphing
                         Y2 = 250 + 100 * (points[1].Y),
                         Stroke = Brushes.Black,
                         StrokeThickness = 1,
+                        Opacity = 3 * Math.Exp(points[0].Z),
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Top
                     });
@@ -113,6 +113,7 @@ namespace _3D_Graphing
                         Y2 = 250 + 100 * (points[3].Y),
                         Stroke = Brushes.Black,
                         StrokeThickness = 1,
+                        Opacity = 3 * Math.Exp(points[2].Z),
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Top
                     });
