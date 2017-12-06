@@ -28,7 +28,7 @@ namespace _3D_Graphing
         {
             try
             {
-                FunctionManager.KeyPoints(Equation.Text, Convert.ToSingle(MinX.Text), Convert.ToSingle(MaxX.Text), Convert.ToSingle(MinY.Text), Convert.ToSingle(MaxY.Text),10);
+                FunctionManager.KeyPoints(Equation.Text, Convert.ToSingle(MinX.Text), Convert.ToSingle(MaxX.Text), Convert.ToSingle(MinY.Text), Convert.ToSingle(MaxY.Text),100 * Convert.ToSingle(Step.Text));
             }
             catch (Exception)
             {

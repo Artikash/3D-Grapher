@@ -8,6 +8,7 @@ namespace _3D_Graphing
     {
         public static Vector3[][] KeyPoints(string functions, float minX, float maxX, float minY, float maxY, float step)
         {
+            if (step <= 0) { throw new FormatException(); }
             List<Vector3[]> pointArrays = new List<Vector3[]>();
             foreach (string function in functions.Split(','))
             {
