@@ -23,8 +23,8 @@
                 </TransformGroup>
             </TextBlock.RenderTransform>
         </TextBlock>
-        <TextBox Name="Equation" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" Margin="114,16,0,0" Grid.Column="1"/>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="76,17,0,0" TextWrapping="Wrap" Text="f(x,y)=" VerticalAlignment="Top"/>
+        <TextBox Name="Equation" HorizontalAlignment="Left" Height="47" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="193" Margin="114,16,0,0" Grid.Column="1"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="67,16,0,0" TextWrapping="Wrap" Text="z=f(x,y)=" VerticalAlignment="Top"/>
         <TextBox x:Name="MinX" HorizontalAlignment="Left" Height="23" Margin="58,77,0,0" TextWrapping="Wrap" Text="-2" VerticalAlignment="Top" Width="49"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="MinX" VerticalAlignment="Top" Margin="20,78,0,0"/>
         <TextBox x:Name="MaxX" HorizontalAlignment="Left" Height="23" Margin="47,77,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top" Width="49" Grid.Column="1"/>
@@ -35,7 +35,6 @@
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="197,78,0,0" Grid.Column="1"><Run Text="M"/><Run Text="axY"/></TextBlock>
         <TextBox x:Name="Step" HorizontalAlignment="Left" Height="23" Margin="336,77,0,0" TextWrapping="Wrap" Text="0.2" VerticalAlignment="Top" Width="49" Grid.Column="1"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Step" VerticalAlignment="Top" Margin="294,78,0,0" Grid.Column="1"/>
-        <Button x:Name="Clear" Content="Clear" HorizontalAlignment="Left" Margin="321,35,0,0" VerticalAlignment="Top" Width="75" Click="Clear_Click" Grid.Column="1"/>
 
     </Grid>
 </Window>
