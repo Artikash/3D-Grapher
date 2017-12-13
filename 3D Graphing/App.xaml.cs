@@ -37,7 +37,7 @@ namespace _3D_Graphing
         public void Render(string function, float X1, float X2, float Y1, float Y2, float step, float angle) // Render the graph of the function.
         {
             var Grid = output.Grid;
-            Grid.Children.Clear();
+            Grid.Children.RemoveRange(6,Int32.MaxValue);
             Projector.rotation = Quaternion.CreateFromAxisAngle(new Vector3(0, 0, 1), angle);
             Vector3[] axes = new Vector3[6] { // This code draws the axes.
                 Projector.Project(new Vector3(0, 0, 10)),

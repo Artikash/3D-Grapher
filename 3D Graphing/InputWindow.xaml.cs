@@ -26,6 +26,11 @@ namespace _3D_Graphing
 
         private void Draw(object sender, RoutedEventArgs e)
         {
+            if (Convert.ToSingle(MaxX.Text) < Convert.ToSingle(MinX.Text) || Convert.ToSingle(MaxY.Text) < Convert.ToSingle(MinY.Text))
+            {
+                MessageBox.Show("Invalid Bounds", "Invalid Bounds", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             try
             {
                 FunctionManager.KeyPoints(Equation.Text, Convert.ToSingle(MinX.Text), Convert.ToSingle(MaxX.Text), Convert.ToSingle(MinY.Text), Convert.ToSingle(MaxY.Text),100 * Convert.ToSingle(Step.Text));
