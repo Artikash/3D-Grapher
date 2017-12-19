@@ -12,19 +12,8 @@
             <ColumnDefinition Width="406*"/>
         </Grid.ColumnDefinitions>
         <Button Name="Button" Content="Draw!" HorizontalAlignment="Left" Margin="321,10,0,0" VerticalAlignment="Top" Width="75" Click="Draw" Grid.Column="1"/>
-        <Slider Name="Angle" HorizontalAlignment="Left" VerticalAlignment="Top" Width="88" Margin="10,12,0,0" Maximum="6.283" TickFrequency="0.1" ValueChanged="AngleChanged"/>
-        <TextBlock x:Name="AngleDisplay" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0 degrees" VerticalAlignment="Top" Margin="10,35,0,0" RenderTransformOrigin="0.5,0.5" Height="24" Width="175" FontSize="18" Grid.ColumnSpan="2">
-            <TextBlock.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-0.418"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </TextBlock.RenderTransform>
-        </TextBlock>
-        <TextBox Name="Equation" HorizontalAlignment="Left" Height="47" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="193" Margin="114,16,0,0" Grid.Column="1"/>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="67,16,0,0" TextWrapping="Wrap" Text="z=f(x,y)=" VerticalAlignment="Top"/>
+        <TextBox Name="Equation" HorizontalAlignment="Left" Height="47" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="355" Margin="62,18,0,0" Grid.ColumnSpan="2"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,16,0,0" TextWrapping="Wrap" Text="z=f(x,y)=" VerticalAlignment="Top"/>
         <TextBox x:Name="MinX" HorizontalAlignment="Left" Height="23" Margin="58,77,0,0" TextWrapping="Wrap" Text="-2" VerticalAlignment="Top" Width="49"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="MinX" VerticalAlignment="Top" Margin="20,78,0,0"/>
         <TextBox x:Name="MaxX" HorizontalAlignment="Left" Height="23" Margin="47,77,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top" Width="49" Grid.Column="1"/>

@@ -8,7 +8,6 @@ namespace _3D_Graphing
 {
     public class GraphingEventArgs : EventArgs
     {
-        public float angle;
         public string function;
         public float minX;
         public float maxX;
@@ -16,9 +15,8 @@ namespace _3D_Graphing
         public float maxY;
         public float step;
 
-        public GraphingEventArgs(float Angle, string Function, float X1, float X2, float Y1, float Y2, float Step)
+        public GraphingEventArgs(string Function, float X1, float X2, float Y1, float Y2, float Step)
         {
-            angle = Angle;
             function = Function;
             minX = X1;
             maxX = X2;

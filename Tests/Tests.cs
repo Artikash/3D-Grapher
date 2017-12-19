@@ -19,7 +19,7 @@ namespace Tests
         [TestMethod]
         public void TestAllCalculations()
         {
-            Assert.IsNotNull(FunctionManager.KeyPoints("y+(x)",-2,2,-2,2,0.1f), "Final Test Failed");
+            Assert.IsNotNull(FunctionManager.KeyPoints("y+(x), x^2",-2,2,-2,2,0.1f), "Final Test Failed");
         }
     }
 }

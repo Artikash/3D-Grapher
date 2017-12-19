@@ -26,19 +26,27 @@ namespace _3D_Graphing
             input.DrawButtonClicked += new EventHandler<GraphingEventArgs>(Draw);
             output = new OutputWindow();
             output.Left = 600;
+            output.MouseDragged += new EventHandler<EventArgs>(ReRender);
             output.Show();
         }
 
         private void Draw(object sender, GraphingEventArgs e)
         {
-            Render(e.function,e.minX,e.maxX,e.minY,e.maxY,e.step,e.angle);
+            Render(e.function,e.minX,e.maxX,e.minY,e.maxY,e.step);
         }
 
-        public void Render(string function, float X1, float X2, float Y1, float Y2, float step, float angle) // Render the graph of the function.
+        private string FUNCTION;
+        private float X1, X2, Y1, Y2, STEP;
+        public void Render(string function, float x1, float x2, float y1, float y2, float step) // Render the graph of the function.
         {
+            FUNCTION = function;
+            X1 = x1;
+            X2 = x2;
+            Y1 = y1;
+            Y2 = y2;
+            STEP = step;
             var Grid = output.Grid;
             Grid.Children.RemoveRange(6,Int32.MaxValue);
-            Projector.rotation = Quaternion.CreateFromAxisAngle(new Vector3(0, 0, 1), angle);
             Vector3[] axes = new Vector3[6] { // This code draws the axes.
                 Projector.Project(new Vector3(0, 0, 10)),
                 Projector.Project(new Vector3(0, 0, -10)),
@@ -80,7 +88,7 @@ namespace _3D_Graphing
                 VerticalAlignment = VerticalAlignment.Top
             }); // Everything before here was just to draw the axes.
 
-            Vector3[][] rawKeyPoints = FunctionManager.KeyPoints(function, X1, X2, Y1, Y2, step); 
+            Vector3[][] rawKeyPoints = FunctionManager.KeyPoints(function, x1, x2, y1, y2, step); 
 
             foreach (Vector3[] rawPoints in rawKeyPoints) // This loop draws the function itself.
             {
@@ -119,6 +127,10 @@ namespace _3D_Graphing
                     });
                 }
             }
+        }
+        public void ReRender(object sender, EventArgs empty)
+        {
+            Render(FUNCTION, X1, X2, Y1, Y2, STEP);
         }
     }
 }
