@@ -88,7 +88,9 @@ namespace _3D_Graphing
             new Dictionary<string, string>
             {
                 {"pi", NumberMaker +  Math.PI.ToString() },
-                {"e", NumberMaker + Math.E.ToString() }
+                {"e", NumberMaker + Math.E.ToString() },
+                {"x", NumberMaker + "x" },
+                {"y", NumberMaker + "y" }
             };
 
         #endregion
@@ -103,11 +105,10 @@ namespace _3D_Graphing
         /// </summary>
         /// <param name="expression">Math expression (infix/standard notation)</param>
         /// <returns>Result</returns>
-        public static float Parse(float x, float y, string expression)
+        public static float Evaluate(float x, float y, string expression)
         {
 
-            return Convert.ToSingle(Calculate(ConvertToRPN(FormatString(
-                expression.Replace("x", "(" + x.ToString() + ")").Replace("y", "(" + y.ToString() + ")")))));
+            return Convert.ToSingle(Calculate(expression.Replace("x",x.ToString()).Replace("y",y.ToString())));
         }
             /// <summary>
             /// Produce formatted string by the given string
@@ -169,16 +170,17 @@ namespace _3D_Graphing
             /// </summary>
             /// <param name="expression">Math expression in infix notation</param>
             /// <returns>Math expression in postfix notation (RPN)</returns>
-            private static string ConvertToRPN(string expression)
+            public static string ConvertToRPN(string expression)
             {
+            string formattedExpression = FormatString(expression);
                 int pos = 0; // Current position of lexical analysis
                 StringBuilder outputString = new StringBuilder();
                 Stack<string> stack = new Stack<string>();
 
                 // While there is unhandled char in expression
-                while (pos < expression.Length)
+                while (pos < formattedExpression.Length)
                 {
-                    string token = LexicalAnalysisInfixNotation(expression, ref pos);
+                    string token = LexicalAnalysisInfixNotation(formattedExpression, ref pos);
 
                     outputString = SyntaxAnalysisInfixNotation(token, outputString, stack);
                 }
