@@ -12,7 +12,7 @@ namespace _3D_Graphing
     /// </summary>
     public partial class OutputWindow : Window
     {
-        internal EventHandler<EventArgs> MouseDragged;
+        internal EventHandler<EventArgs> ReRenderRequested;
         Point basePosition;
         bool mouseDown;
         
@@ -39,9 +39,15 @@ namespace _3D_Graphing
                 double changeInX = e.GetPosition(this).X - basePosition.X;
                 double changeInY = e.GetPosition(this).Y - basePosition.Y;
                 basePosition = e.GetPosition(this);
-                Projector.SetAngle(Projector.GetTheta() + (float)changeInX / 250.0f, Projector.GetPhi() - (float)changeInY / 250.0f);
-                MouseDragged(this, new EventArgs());
+                Projector.SetAngle(Projector.GetTheta() - (float)changeInX / 250.0f, Projector.GetPhi() - (float)changeInY / 250.0f);
+                ReRenderRequested(this, new EventArgs());
             }
+        }
+
+        private void MouseScroll(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            Projector.scaleFactor *= (float)Math.Exp(e.Delta / 1000.0);
+            ReRenderRequested(this, new EventArgs());
         }
     }
 }

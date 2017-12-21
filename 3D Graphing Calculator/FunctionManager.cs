@@ -19,16 +19,16 @@ namespace _3D_Graphing
                     {
                         pointArrays.Add(new Vector3[4] // These 4 points need lines between them, so they're grouped together.
                          {
-                        new Vector3(x + step, y, -MathParser.Evaluate(x + step, y,formattedFunction)),
-                        new Vector3(x - step, y, -MathParser.Evaluate(x - step, y,formattedFunction)),
-                        new Vector3(x, y + step, -MathParser.Evaluate(x, y + step,formattedFunction)),
-                        new Vector3(x, y - step, -MathParser.Evaluate(x, y - step,formattedFunction))
+                            new Vector3(x + step, y, -MathParser.Evaluate(x + step, y, formattedFunction)),
+                            new Vector3(x - step, y, -MathParser.Evaluate(x - step, y, formattedFunction)),
+                            new Vector3(x, y + step, -MathParser.Evaluate(x, y + step, formattedFunction)),
+                            new Vector3(x, y - step, -MathParser.Evaluate(x, y - step, formattedFunction))
                          }
                          );
                     }
                 }
             }
-            return pointArrays.ToArray(); 
+            return pointArrays.ToArray();
         }
     }
 

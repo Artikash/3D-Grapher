@@ -1,4 +1,8 @@
-﻿<Window x:Class="_3D_Graphing.OutputWindow" PreviewMouseLeftButtonDown="Mouse1Down" PreviewMouseLeftButtonUp="Mouse1Up"
+﻿<Window x:Class="_3D_Graphing.OutputWindow" 
+        PreviewMouseLeftButtonDown="Mouse1Down" 
+        PreviewMouseLeftButtonUp="Mouse1Up" 
+        PreviewMouseMove="MouseMove"
+        PreviewMouseWheel="MouseScroll"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,7 +10,7 @@
         xmlns:local="clr-namespace:_3D_Graphing"
         mc:Ignorable="d"
         Title="Output" Height="500" Width="500" ResizeMode="NoResize">
-    <Grid x:Name="Grid" PreviewMouseMove="MouseMove">
+    <Grid x:Name="Grid">
         <Rectangle Fill="Green" HorizontalAlignment="Left" Height="20" Margin="430,391,0,0" Stroke="Black" VerticalAlignment="Top" Width="20"/>
         <TextBlock HorizontalAlignment="Left" Height="20" Margin="455,391,0,0" TextWrapping="Wrap" Text="X" VerticalAlignment="Top" Width="29"/>
         <Rectangle Fill="Red" HorizontalAlignment="Left" Height="20" Margin="430,416,0,0" Stroke="Black" VerticalAlignment="Top" Width="20"/>

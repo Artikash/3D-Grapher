@@ -9,6 +9,7 @@ namespace _3D_Graphing
 {
     public static class Projector // Singleton that maps 3D to 2D for graphing
     {
+        public static float scaleFactor = 1;
         private static Quaternion thetaRotation = Quaternion.Identity;
         private static Quaternion phiRotation = Quaternion.Identity;
         private static float theta = 0;
@@ -16,8 +17,11 @@ namespace _3D_Graphing
 
         public static Vector3 Project(Vector3 point)
         {
-            Vector3 transformedPoint = Vector3.Transform(Vector3.Transform(point,thetaRotation),phiRotation);
-            return new Vector3(0.866f * (-transformedPoint.X + transformedPoint.Y), transformedPoint.Z + 0.5f * (transformedPoint.X + transformedPoint.Y),transformedPoint.X + transformedPoint.Y);
+            Vector3 transformedPoint = Vector3.Transform(Vector3.Transform(point, thetaRotation), phiRotation);
+            return scaleFactor * new Vector3
+                (0.866f * (-transformedPoint.X + transformedPoint.Y),
+                transformedPoint.Z + 0.5f * (transformedPoint.X + transformedPoint.Y),
+                transformedPoint.X + transformedPoint.Y);
         }
 
         public static void SetAngle(float newTheta, float newPhi)
