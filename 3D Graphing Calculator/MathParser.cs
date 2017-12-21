@@ -5,8 +5,10 @@ using System.Text;
 
 namespace _3D_Graphing
 {
-    public static class MathParser // I just copy pasted a bunch of code for math parsing, god knows how it works...but it does work, and work pretty well, so fuck it.
+    public static class MathParser 
     {
+        // I just copy pasted a bunch of code for math parsing, god knows how it works
+        // but it does work, and work pretty well, so fuck it.
         public static void Main() { }
         #region Fields
 
@@ -107,551 +109,550 @@ namespace _3D_Graphing
         /// <returns>Result</returns>
         public static float Evaluate(float x, float y, string expression)
         {
-
-            return Convert.ToSingle(Calculate(expression.Replace("x",x.ToString()).Replace("y",y.ToString())));
+            return (float)Calculate(expression.Replace("x", x.ToString()).Replace("y", y.ToString()));
         }
-            /// <summary>
-            /// Produce formatted string by the given string
-            /// </summary>
-            /// <param name="expression">Unformatted math expression</param>
-            /// <returns>Formatted math expression</returns>
-            private static string FormatString(string expression)
+        /// <summary>
+        /// Produce formatted string by the given string
+        /// </summary>
+        /// <param name="expression">Unformatted math expression</param>
+        /// <returns>Formatted math expression</returns>
+        private static string FormatString(string expression)
+        {
+            if (string.IsNullOrEmpty(expression))
             {
-                if (string.IsNullOrEmpty(expression))
-                {
-                    throw new ArgumentNullException("Expression is null or empty");
-                }
-
-                StringBuilder formattedString = new StringBuilder();
-                int balanceOfParenth = 0; // Check number of parenthesis
-
-                // Format string in one iteration and check number of parenthesis
-                // (this function do 2 tasks because performance priority)
-                for (int i = 0; i < expression.Length; i++)
-                {
-                    char ch = expression[i];
-
-                    if (ch == '(')
-                    {
-                        balanceOfParenth++;
-                    }
-                    else if (ch == ')')
-                    {
-                        balanceOfParenth--;
-                    }
-
-                    if (Char.IsWhiteSpace(ch))
-                    {
-                        continue;
-                    }
-                    else if (Char.IsUpper(ch))
-                    {
-                        formattedString.Append(Char.ToLower(ch));
-                    }
-                    else
-                    {
-                        formattedString.Append(ch);
-                    }
-                }
-
-                if (balanceOfParenth != 0)
-                {
-                    throw new FormatException("Number of left and right parenthesis is not equal");
-                }
-
-                return formattedString.ToString();
+                throw new ArgumentNullException("Expression is null or empty");
             }
 
-            #region Convert to Reverse-Polish Notation
+            StringBuilder formattedString = new StringBuilder();
+            int balanceOfParenth = 0; // Check number of parenthesis
 
-            /// <summary>
-            /// Produce math expression in reverse polish notation
-            /// by the given string
-            /// </summary>
-            /// <param name="expression">Math expression in infix notation</param>
-            /// <returns>Math expression in postfix notation (RPN)</returns>
-            public static string ConvertToRPN(string expression)
+            // Format string in one iteration and check number of parenthesis
+            // (this function do 2 tasks because performance priority)
+            for (int i = 0; i < expression.Length; i++)
             {
+                char ch = expression[i];
+
+                if (ch == '(')
+                {
+                    balanceOfParenth++;
+                }
+                else if (ch == ')')
+                {
+                    balanceOfParenth--;
+                }
+
+                if (Char.IsWhiteSpace(ch))
+                {
+                    continue;
+                }
+                else if (Char.IsUpper(ch))
+                {
+                    formattedString.Append(Char.ToLower(ch));
+                }
+                else
+                {
+                    formattedString.Append(ch);
+                }
+            }
+
+            if (balanceOfParenth != 0)
+            {
+                throw new FormatException("Number of left and right parenthesis is not equal");
+            }
+
+            return formattedString.ToString();
+        }
+
+        #region Convert to Reverse-Polish Notation
+
+        /// <summary>
+        /// Produce math expression in reverse polish notation
+        /// by the given string
+        /// </summary>
+        /// <param name="expression">Math expression in infix notation</param>
+        /// <returns>Math expression in postfix notation (RPN)</returns>
+        public static string ConvertToRPN(string expression)
+        {
             string formattedExpression = FormatString(expression);
-                int pos = 0; // Current position of lexical analysis
-                StringBuilder outputString = new StringBuilder();
-                Stack<string> stack = new Stack<string>();
+            int pos = 0; // Current position of lexical analysis
+            StringBuilder outputString = new StringBuilder();
+            Stack<string> stack = new Stack<string>();
 
-                // While there is unhandled char in expression
-                while (pos < formattedExpression.Length)
-                {
-                    string token = LexicalAnalysisInfixNotation(formattedExpression, ref pos);
+            // While there is unhandled char in expression
+            while (pos < formattedExpression.Length)
+            {
+                string token = LexicalAnalysisInfixNotation(formattedExpression, ref pos);
 
-                    outputString = SyntaxAnalysisInfixNotation(token, outputString, stack);
-                }
-
-                // Pop all elements from stack to output string            
-                while (stack.Count > 0)
-                {
-                    // There should be only operators
-                    if (stack.Peek()[0] == OperatorMarker[0])
-                    {
-                        outputString.Append(stack.Pop());
-                    }
-                    else
-                    {
-                        throw new FormatException("Format exception,"
-                        + " there is function without parenthesis");
-                    }
-                }
-
-                return outputString.ToString();
+                outputString = SyntaxAnalysisInfixNotation(token, outputString, stack);
             }
 
-            /// <summary>
-            /// Produce token by the given math expression
-            /// </summary>
-            /// <param name="expression">Math expression in infix notation</param>
-            /// <param name="pos">Current position in string for lexical analysis</param>
-            /// <returns>Token</returns>
-            private static string LexicalAnalysisInfixNotation(string expression, ref int pos)
+            // Pop all elements from stack to output string            
+            while (stack.Count > 0)
             {
-                // Receive first char
-                StringBuilder token = new StringBuilder();
-                token.Append(expression[pos]);
-
-                // If it is a operator
-                if (supportedOperators.ContainsKey(token.ToString()))
+                // There should be only operators
+                if (stack.Peek()[0] == OperatorMarker[0])
                 {
-                    // Determine it is unary or binary operator
-                    bool isUnary = pos == 0 || expression[pos - 1] == '(';
-                    pos++;
-
-                    switch (token.ToString())
-                    {
-                        case "+":
-                            return isUnary ? UnPlus : Plus;
-                        case "-":
-                            return isUnary ? UnMinus : Minus;
-                        default:
-                            return supportedOperators[token.ToString()];
-                    }
+                    outputString.Append(stack.Pop());
                 }
-                else if (Char.IsLetter(token[0])
-                    || supportedFunctions.ContainsKey(token.ToString())
-                    || supportedConstants.ContainsKey(token.ToString()))
+                else
                 {
-                    // Read function or constant name
+                    throw new FormatException("Format exception,"
+                    + " there is function without parenthesis");
+                }
+            }
 
+            return outputString.ToString();
+        }
+
+        /// <summary>
+        /// Produce token by the given math expression
+        /// </summary>
+        /// <param name="expression">Math expression in infix notation</param>
+        /// <param name="pos">Current position in string for lexical analysis</param>
+        /// <returns>Token</returns>
+        private static string LexicalAnalysisInfixNotation(string expression, ref int pos)
+        {
+            // Receive first char
+            StringBuilder token = new StringBuilder();
+            token.Append(expression[pos]);
+
+            // If it is a operator
+            if (supportedOperators.ContainsKey(token.ToString()))
+            {
+                // Determine it is unary or binary operator
+                bool isUnary = pos == 0 || expression[pos - 1] == '(';
+                pos++;
+
+                switch (token.ToString())
+                {
+                    case "+":
+                        return isUnary ? UnPlus : Plus;
+                    case "-":
+                        return isUnary ? UnMinus : Minus;
+                    default:
+                        return supportedOperators[token.ToString()];
+                }
+            }
+            else if (Char.IsLetter(token[0])
+                || supportedFunctions.ContainsKey(token.ToString())
+                || supportedConstants.ContainsKey(token.ToString()))
+            {
+                // Read function or constant name
+
+                while (++pos < expression.Length
+                    && Char.IsLetter(expression[pos]))
+                {
+                    token.Append(expression[pos]);
+                }
+
+                if (supportedFunctions.ContainsKey(token.ToString()))
+                {
+                    return supportedFunctions[token.ToString()];
+                }
+                else if (supportedConstants.ContainsKey(token.ToString()))
+                {
+                    return supportedConstants[token.ToString()];
+                }
+                else
+                {
+                    throw new ArgumentException("Unknown token");
+                }
+
+            }
+            else if (Char.IsDigit(token[0]) || token[0] == decimalSeparator)
+            {
+                // Read number
+
+                // Read the whole part of number
+                if (Char.IsDigit(token[0]))
+                {
                     while (++pos < expression.Length
-                        && Char.IsLetter(expression[pos]))
+                    && Char.IsDigit(expression[pos]))
                     {
                         token.Append(expression[pos]);
                     }
-
-                    if (supportedFunctions.ContainsKey(token.ToString()))
-                    {
-                        return supportedFunctions[token.ToString()];
-                    }
-                    else if (supportedConstants.ContainsKey(token.ToString()))
-                    {
-                        return supportedConstants[token.ToString()];
-                    }
-                    else
-                    {
-                        throw new ArgumentException("Unknown token");
-                    }
-
                 }
-                else if (Char.IsDigit(token[0]) || token[0] == decimalSeparator)
+                else
                 {
-                    // Read number
+                    // Because system decimal separator
+                    // will be added below
+                    token.Clear();
+                }
 
-                    // Read the whole part of number
-                    if (Char.IsDigit(token[0]))
+                // Read the fractional part of number
+                if (pos < expression.Length
+                    && expression[pos] == decimalSeparator)
+                {
+                    // Add current system specific decimal separator
+                    token.Append(CultureInfo.CurrentCulture
+                        .NumberFormat.NumberDecimalSeparator);
+
+                    while (++pos < expression.Length
+                    && Char.IsDigit(expression[pos]))
                     {
-                        while (++pos < expression.Length
+                        token.Append(expression[pos]);
+                    }
+                }
+
+                // Read scientific notation (suffix)
+                if (pos + 1 < expression.Length && expression[pos] == 'e'
+                    && (Char.IsDigit(expression[pos + 1])
+                        || (pos + 2 < expression.Length
+                            && (expression[pos + 1] == '+'
+                                || expression[pos + 1] == '-')
+                            && Char.IsDigit(expression[pos + 2]))))
+                {
+                    token.Append(expression[pos++]); // e
+
+                    if (expression[pos] == '+' || expression[pos] == '-')
+                        token.Append(expression[pos++]); // sign
+
+                    while (pos < expression.Length
                         && Char.IsDigit(expression[pos]))
-                        {
-                            token.Append(expression[pos]);
-                        }
-                    }
-                    else
                     {
-                        // Because system decimal separator
-                        // will be added below
-                        token.Clear();
+                        token.Append(expression[pos++]); // power
                     }
 
-                    // Read the fractional part of number
-                    if (pos < expression.Length
-                        && expression[pos] == decimalSeparator)
-                    {
-                        // Add current system specific decimal separator
-                        token.Append(CultureInfo.CurrentCulture
-                            .NumberFormat.NumberDecimalSeparator);
-
-                        while (++pos < expression.Length
-                        && Char.IsDigit(expression[pos]))
-                        {
-                            token.Append(expression[pos]);
-                        }
-                    }
-
-                    // Read scientific notation (suffix)
-                    if (pos + 1 < expression.Length && expression[pos] == 'e'
-                        && (Char.IsDigit(expression[pos + 1])
-                            || (pos + 2 < expression.Length
-                                && (expression[pos + 1] == '+'
-                                    || expression[pos + 1] == '-')
-                                && Char.IsDigit(expression[pos + 2]))))
-                    {
-                        token.Append(expression[pos++]); // e
-
-                        if (expression[pos] == '+' || expression[pos] == '-')
-                            token.Append(expression[pos++]); // sign
-
-                        while (pos < expression.Length
-                            && Char.IsDigit(expression[pos]))
-                        {
-                            token.Append(expression[pos++]); // power
-                        }
-
-                        // Convert number from scientific notation to decimal notation
-                        return NumberMaker + Convert.ToDouble(token.ToString());
-                    }
-
-                    return NumberMaker + token.ToString();
+                    // Convert number from scientific notation to decimal notation
+                    return NumberMaker + Convert.ToDouble(token.ToString());
                 }
-                else
-                {
-                    throw new ArgumentException("Unknown token in expression");
-                }
+
+                return NumberMaker + token.ToString();
             }
-
-            /// <summary>
-            /// Syntax analysis of infix notation
-            /// </summary>
-            /// <param name="token">Token</param>
-            /// <param name="outputString">Output string (math expression in RPN)</param>
-            /// <param name="stack">Stack which contains operators (or functions)</param>
-            /// <returns>Output string (math expression in RPN)</returns>
-            private static StringBuilder SyntaxAnalysisInfixNotation(string token, StringBuilder outputString, Stack<string> stack)
+            else
             {
-                // If it's a number just put to string            
-                if (token[0] == NumberMaker[0])
-                {
-                    outputString.Append(token);
-                }
-                else if (token[0] == FunctionMarker[0])
-                {
-                    // if it's a function push to stack
-                    stack.Push(token);
-                }
-                else if (token == LeftParent)
-                {
-                    // If its '(' push to stack
-                    stack.Push(token);
-                }
-                else if (token == RightParent)
-                {
-                    // If its ')' pop elements from stack to output string
-                    // until find the ')'
-
-                    string elem;
-                    while ((elem = stack.Pop()) != LeftParent)
-                    {
-                        outputString.Append(elem);
-                    }
-
-                    // if after this a function is in the peek of stack then put it to string
-                    if (stack.Count > 0 &&
-                        stack.Peek()[0] == FunctionMarker[0])
-                    {
-                        outputString.Append(stack.Pop());
-                    }
-                }
-                else
-                {
-                    // While priority of elements at peek of stack >= (>) token's priority
-                    // put these elements to output string
-                    while (stack.Count > 0 &&
-                        Priority(token, stack.Peek()))
-                    {
-                        outputString.Append(stack.Pop());
-                    }
-
-                    stack.Push(token);
-                }
-
-                return outputString;
+                throw new ArgumentException("Unknown token in expression");
             }
-
-            /// <summary>
-            /// Is priority of token less (or equal) to priority of p
-            /// </summary>
-            private static bool Priority(string token, string p)
-            {
-                return IsRightAssociated(token) ?
-                    GetPriority(token) < GetPriority(p) :
-                    GetPriority(token) <= GetPriority(p);
-            }
-
-            /// <summary>
-            /// Is right associated operator
-            /// </summary>
-            private static bool IsRightAssociated(string token)
-            {
-                return token == Degree;
-            }
-
-            /// <summary>
-            /// Get priority of operator
-            /// </summary>
-            private static int GetPriority(string token)
-            {
-                switch (token)
-                {
-                    case LeftParent:
-                        return 0;
-                    case Plus:
-                    case Minus:
-                        return 2;
-                    case UnPlus:
-                    case UnMinus:
-                        return 6;
-                    case Multiply:
-                    case Divide:
-                        return 4;
-                    case Degree:
-                    case Sqrt:
-                        return 8;
-                    case Sin:
-                    case Cos:
-                    case Tg:
-                    case Ctg:
-                    case Sh:
-                    case Ch:
-                    case Th:
-                    case Log:
-                    case Ln:
-                    case Exp:
-                    case Abs:
-                        return 10;
-                    default:
-                        throw new ArgumentException("Unknown operator");
-                }
-            }
-
-            #endregion
-
-            #region Calculate expression in RPN
-
-            /// <summary>
-            /// Calculate expression in reverse-polish notation
-            /// </summary>
-            /// <param name="expression">Math expression in reverse-polish notation</param>
-            /// <returns>Result</returns>
-            private static double Calculate(string expression)
-            {
-                int pos = 0; // Current position of lexical analysis
-                var stack = new Stack<double>(); // Contains operands
-
-                // Analyse entire expression
-                while (pos < expression.Length)
-                {
-                    string token = LexicalAnalysisRPN(expression, ref pos);
-
-                    stack = SyntaxAnalysisRPN(stack, token);
-                }
-
-                // At end of analysis in stack should be only one operand (result)
-                if (stack.Count > 1)
-                {
-                    throw new ArgumentException("Excess operand");
-                }
-
-                return stack.Pop();
-            }
-
-            /// <summary>
-            /// Produce token by the given math expression
-            /// </summary>
-            /// <param name="expression">Math expression in reverse-polish notation</param>
-            /// <param name="pos">Current position of lexical analysis</param>
-            /// <returns>Token</returns>
-            private static string LexicalAnalysisRPN(string expression, ref int pos)
-            {
-                StringBuilder token = new StringBuilder();
-
-                // Read token from marker to next marker
-
-                token.Append(expression[pos++]);
-
-                while (pos < expression.Length && expression[pos] != NumberMaker[0]
-                    && expression[pos] != OperatorMarker[0]
-                    && expression[pos] != FunctionMarker[0])
-                {
-                    token.Append(expression[pos++]);
-                }
-
-                return token.ToString();
-            }
-
-            /// <summary>
-            /// Syntax analysis of reverse-polish notation
-            /// </summary>
-            /// <param name="stack">Stack which contains operands</param>
-            /// <param name="token">Token</param>
-            /// <returns>Stack which contains operands</returns>
-            private static Stack<double> SyntaxAnalysisRPN(Stack<double> stack, string token)
-            {
-                // if it's operand then just push it to stack
-                if (token[0] == NumberMaker[0])
-                {
-                    stack.Push(double.Parse(token.Remove(0, 1)));
-                }
-                // Otherwise apply operator or function to elements in stack
-                else if (NumberOfArguments(token) == 1)
-                {
-                    double arg = stack.Pop();
-                    double rst;
-
-                    switch (token)
-                    {
-                        case UnPlus:
-                            rst = arg;
-                            break;
-                        case UnMinus:
-                            rst = -arg;
-                            break;
-                        case Sqrt:
-                            rst = Math.Sqrt(arg);
-                            break;
-                        case Sin:
-                            rst = ApplyTrigFunction(Math.Sin, arg);
-                            break;
-                        case Cos:
-                            rst = ApplyTrigFunction(Math.Cos, arg);
-                            break;
-                        case Tg:
-                            rst = ApplyTrigFunction(Math.Tan, arg);
-                            break;
-                        case Ctg:
-                            rst = 1 / ApplyTrigFunction(Math.Tan, arg);
-                            break;
-                        case Sh:
-                            rst = Math.Sinh(arg);
-                            break;
-                        case Ch:
-                            rst =
-                        rst = Math.Cosh(arg);
-                            break;
-                        case Th:
-                            rst = Math.Tanh(arg);
-                            break;
-                        case Ln:
-                            rst = Math.Log(arg);
-                            break;
-                        case Exp:
-                            rst = Math.Exp(arg);
-                            break;
-                        case Abs:
-                            rst = Math.Abs(arg);
-                            break;
-                        default:
-                            throw new ArgumentException("Unknown operator");
-                    }
-
-                    stack.Push(rst);
-                }
-                else
-                {
-                    // otherwise operator's number of arguments equals to 2
-
-                    double arg2 = stack.Pop();
-                    double arg1 = stack.Pop();
-
-                    double rst;
-
-                    switch (token)
-                    {
-                        case Plus:
-                            rst = arg1 + arg2;
-                            break;
-                        case Minus:
-                            rst = arg1 - arg2;
-                            break;
-                        case Multiply:
-                            rst = arg1 * arg2;
-                            break;
-                        case Divide:
-                            if (arg2 == 0)
-                            {
-                                throw new DivideByZeroException("Second argument is zero");
-                            }
-                            rst = arg1 / arg2;
-                            break;
-                        case Degree:
-                            rst = Math.Pow(arg1, arg2);
-                            break;
-                        case Log:
-                            rst = Math.Log(arg2, arg1);
-                            break;
-                        default:
-                            throw new ArgumentException("Unknown operator");
-                    }
-
-                    stack.Push(rst);
-                }
-
-                return stack;
-            }
-
-            /// <summary>
-            /// Apply trigonometric function
-            /// </summary>
-            /// <param name="func">Trigonometric function</param>
-            /// <param name="arg">Argument</param>
-            /// <returns>Result of function</returns>
-            private static double ApplyTrigFunction(Func<double, double> func, double arg)
-            {
-                if (!isRadians)
-                {
-                    arg = arg * Math.PI / 180; // Convert value to degree
-                }
-
-                return func(arg);
-            }
-
-            /// <summary>
-            /// Produce number of arguments for the given operator
-            /// </summary>
-            private static int NumberOfArguments(string token)
-            {
-                switch (token)
-                {
-                    case UnPlus:
-                    case UnMinus:
-                    case Sqrt:
-                    case Tg:
-                    case Sh:
-                    case Ch:
-                    case Th:
-                    case Ln:
-                    case Ctg:
-                    case Sin:
-                    case Cos:
-                    case Exp:
-                    case Abs:
-                        return 1;
-                    case Plus:
-                    case Minus:
-                    case Multiply:
-                    case Divide:
-                    case Degree:
-                    case Log:
-                        return 2;
-                    default:
-                        throw new ArgumentException("Unknown operator");
-                }
-            }
-
-            #endregion
         }
+
+        /// <summary>
+        /// Syntax analysis of infix notation
+        /// </summary>
+        /// <param name="token">Token</param>
+        /// <param name="outputString">Output string (math expression in RPN)</param>
+        /// <param name="stack">Stack which contains operators (or functions)</param>
+        /// <returns>Output string (math expression in RPN)</returns>
+        private static StringBuilder SyntaxAnalysisInfixNotation(string token, StringBuilder outputString, Stack<string> stack)
+        {
+            // If it's a number just put to string            
+            if (token[0] == NumberMaker[0])
+            {
+                outputString.Append(token);
+            }
+            else if (token[0] == FunctionMarker[0])
+            {
+                // if it's a function push to stack
+                stack.Push(token);
+            }
+            else if (token == LeftParent)
+            {
+                // If its '(' push to stack
+                stack.Push(token);
+            }
+            else if (token == RightParent)
+            {
+                // If its ')' pop elements from stack to output string
+                // until find the ')'
+
+                string elem;
+                while ((elem = stack.Pop()) != LeftParent)
+                {
+                    outputString.Append(elem);
+                }
+
+                // if after this a function is in the peek of stack then put it to string
+                if (stack.Count > 0 &&
+                    stack.Peek()[0] == FunctionMarker[0])
+                {
+                    outputString.Append(stack.Pop());
+                }
+            }
+            else
+            {
+                // While priority of elements at peek of stack >= (>) token's priority
+                // put these elements to output string
+                while (stack.Count > 0 &&
+                    Priority(token, stack.Peek()))
+                {
+                    outputString.Append(stack.Pop());
+                }
+
+                stack.Push(token);
+            }
+
+            return outputString;
+        }
+
+        /// <summary>
+        /// Is priority of token less (or equal) to priority of p
+        /// </summary>
+        private static bool Priority(string token, string p)
+        {
+            return IsRightAssociated(token) ?
+                GetPriority(token) < GetPriority(p) :
+                GetPriority(token) <= GetPriority(p);
+        }
+
+        /// <summary>
+        /// Is right associated operator
+        /// </summary>
+        private static bool IsRightAssociated(string token)
+        {
+            return token == Degree;
+        }
+
+        /// <summary>
+        /// Get priority of operator
+        /// </summary>
+        private static int GetPriority(string token)
+        {
+            switch (token)
+            {
+                case LeftParent:
+                    return 0;
+                case Plus:
+                case Minus:
+                    return 2;
+                case UnPlus:
+                case UnMinus:
+                    return 6;
+                case Multiply:
+                case Divide:
+                    return 4;
+                case Degree:
+                case Sqrt:
+                    return 8;
+                case Sin:
+                case Cos:
+                case Tg:
+                case Ctg:
+                case Sh:
+                case Ch:
+                case Th:
+                case Log:
+                case Ln:
+                case Exp:
+                case Abs:
+                    return 10;
+                default:
+                    throw new ArgumentException("Unknown operator");
+            }
+        }
+
+        #endregion
+
+        #region Calculate expression in RPN
+
+        /// <summary>
+        /// Calculate expression in reverse-polish notation
+        /// </summary>
+        /// <param name="expression">Math expression in reverse-polish notation</param>
+        /// <returns>Result</returns>
+        private static double Calculate(string expression)
+        {
+            int pos = 0; // Current position of lexical analysis
+            var stack = new Stack<double>(); // Contains operands
+
+            // Analyse entire expression
+            while (pos < expression.Length)
+            {
+                string token = LexicalAnalysisRPN(expression, ref pos);
+
+                stack = SyntaxAnalysisRPN(stack, token);
+            }
+
+            // At end of analysis in stack should be only one operand (result)
+            if (stack.Count > 1)
+            {
+                throw new ArgumentException("Excess operand");
+            }
+
+            return stack.Pop();
+        }
+
+        /// <summary>
+        /// Produce token by the given math expression
+        /// </summary>
+        /// <param name="expression">Math expression in reverse-polish notation</param>
+        /// <param name="pos">Current position of lexical analysis</param>
+        /// <returns>Token</returns>
+        private static string LexicalAnalysisRPN(string expression, ref int pos)
+        {
+            StringBuilder token = new StringBuilder();
+
+            // Read token from marker to next marker
+
+            token.Append(expression[pos++]);
+
+            while (pos < expression.Length && expression[pos] != NumberMaker[0]
+                && expression[pos] != OperatorMarker[0]
+                && expression[pos] != FunctionMarker[0])
+            {
+                token.Append(expression[pos++]);
+            }
+
+            return token.ToString();
+        }
+
+        /// <summary>
+        /// Syntax analysis of reverse-polish notation
+        /// </summary>
+        /// <param name="stack">Stack which contains operands</param>
+        /// <param name="token">Token</param>
+        /// <returns>Stack which contains operands</returns>
+        private static Stack<double> SyntaxAnalysisRPN(Stack<double> stack, string token)
+        {
+            // if it's operand then just push it to stack
+            if (token[0] == NumberMaker[0])
+            {
+                stack.Push(double.Parse(token.Remove(0, 1)));
+            }
+            // Otherwise apply operator or function to elements in stack
+            else if (NumberOfArguments(token) == 1)
+            {
+                double arg = stack.Pop();
+                double rst;
+
+                switch (token)
+                {
+                    case UnPlus:
+                        rst = arg;
+                        break;
+                    case UnMinus:
+                        rst = -arg;
+                        break;
+                    case Sqrt:
+                        rst = Math.Sqrt(arg);
+                        break;
+                    case Sin:
+                        rst = ApplyTrigFunction(Math.Sin, arg);
+                        break;
+                    case Cos:
+                        rst = ApplyTrigFunction(Math.Cos, arg);
+                        break;
+                    case Tg:
+                        rst = ApplyTrigFunction(Math.Tan, arg);
+                        break;
+                    case Ctg:
+                        rst = 1 / ApplyTrigFunction(Math.Tan, arg);
+                        break;
+                    case Sh:
+                        rst = Math.Sinh(arg);
+                        break;
+                    case Ch:
+                        rst =
+                    rst = Math.Cosh(arg);
+                        break;
+                    case Th:
+                        rst = Math.Tanh(arg);
+                        break;
+                    case Ln:
+                        rst = Math.Log(arg);
+                        break;
+                    case Exp:
+                        rst = Math.Exp(arg);
+                        break;
+                    case Abs:
+                        rst = Math.Abs(arg);
+                        break;
+                    default:
+                        throw new ArgumentException("Unknown operator");
+                }
+
+                stack.Push(rst);
+            }
+            else
+            {
+                // otherwise operator's number of arguments equals to 2
+
+                double arg2 = stack.Pop();
+                double arg1 = stack.Pop();
+
+                double rst;
+
+                switch (token)
+                {
+                    case Plus:
+                        rst = arg1 + arg2;
+                        break;
+                    case Minus:
+                        rst = arg1 - arg2;
+                        break;
+                    case Multiply:
+                        rst = arg1 * arg2;
+                        break;
+                    case Divide:
+                        if (arg2 == 0)
+                        {
+                            throw new DivideByZeroException("Second argument is zero");
+                        }
+                        rst = arg1 / arg2;
+                        break;
+                    case Degree:
+                        rst = Math.Pow(arg1, arg2);
+                        break;
+                    case Log:
+                        rst = Math.Log(arg2, arg1);
+                        break;
+                    default:
+                        throw new ArgumentException("Unknown operator");
+                }
+
+                stack.Push(rst);
+            }
+
+            return stack;
+        }
+
+        /// <summary>
+        /// Apply trigonometric function
+        /// </summary>
+        /// <param name="func">Trigonometric function</param>
+        /// <param name="arg">Argument</param>
+        /// <returns>Result of function</returns>
+        private static double ApplyTrigFunction(Func<double, double> func, double arg)
+        {
+            if (!isRadians)
+            {
+                arg = arg * Math.PI / 180; // Convert value to degree
+            }
+
+            return func(arg);
+        }
+
+        /// <summary>
+        /// Produce number of arguments for the given operator
+        /// </summary>
+        private static int NumberOfArguments(string token)
+        {
+            switch (token)
+            {
+                case UnPlus:
+                case UnMinus:
+                case Sqrt:
+                case Tg:
+                case Sh:
+                case Ch:
+                case Th:
+                case Ln:
+                case Ctg:
+                case Sin:
+                case Cos:
+                case Exp:
+                case Abs:
+                    return 1;
+                case Plus:
+                case Minus:
+                case Multiply:
+                case Divide:
+                case Degree:
+                case Log:
+                    return 2;
+                default:
+                    throw new ArgumentException("Unknown operator");
+            }
+        }
+
+        #endregion
     }
+}

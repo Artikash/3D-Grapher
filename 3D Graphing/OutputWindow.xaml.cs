@@ -37,8 +37,9 @@ namespace _3D_Graphing
             if (mouseDown)
             {
                 double changeInX = e.GetPosition(this).X - basePosition.X;
+                double changeInY = e.GetPosition(this).Y - basePosition.Y;
                 basePosition = e.GetPosition(this);
-                Projector.SetAngle(Projector.GetAngle() + (float)changeInX / 250.0f);
+                Projector.SetAngle(Projector.GetTheta() + (float)changeInX / 250.0f, Projector.GetPhi() - (float)changeInY / 250.0f);
                 MouseDragged(this, new EventArgs());
             }
         }
