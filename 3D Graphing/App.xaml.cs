@@ -34,7 +34,20 @@ namespace _3D_Graphing
 
         private void Draw(object sender, GraphingEventArgs e)
         {
-            keyPoints = FunctionManager.KeyPoints(e.function, e.minX, e.maxX, e.minY, e.maxY, e.step);
+            try
+            {
+                keyPoints = FunctionManager.KeyPoints(e.function, e.minX, e.maxX, e.minY, e.maxY, e.step);
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Invalid Bounds", "Invalid Bounds", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Invalid Equation", "Invalid Equation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             Render();
         }
 
@@ -42,13 +55,47 @@ namespace _3D_Graphing
         {
             var Grid = output.Grid;
             Grid.Children.RemoveRange(6,Int32.MaxValue);
-            Vector3[] axes = new Vector3[6] { // This code draws the axes.
+
+            bool color = false;
+            foreach (Vector3[] keyPointGroup in keyPoints) // This loop draws the function itself.
+            {
+                color = !color;
+                Vector3[] points = new Vector3[4]
+                {
+                    Projector.Project(keyPointGroup[0]),
+                    Projector.Project(keyPointGroup[1]),
+                    Projector.Project(keyPointGroup[2]),
+                    Projector.Project(keyPointGroup[3]),
+                };
+                if (Math.Abs(points[0].Y) < 1000 && Math.Abs(points[1].Y) < 1000 && Math.Abs(points[2].Y) < 1000 && Math.Abs(points[3].Y) < 1000)
+                {
+                    Grid.Children.Add(new Polygon()
+                    {
+                        Points = new PointCollection
+                        {
+                            new Point(250 + 100 * points[0].X, 250 + 100 * points[0].Y),
+                            new Point(250 + 100 * points[1].X, 250 + 100 * points[1].Y),
+                            new Point(250 + 100 * points[2].X, 250 + 100 * points[2].Y),
+                            new Point(250 + 100 * points[3].X, 250 + 100 * points[3].Y)
+                        },
+                        Stroke = Brushes.Black,
+                        StrokeThickness = 1,
+                        Fill = color ? Brushes.LightBlue : Brushes.DarkRed,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Top
+                    });
+                }
+            }
+
+            Vector3[] axes = new Vector3[6]
+            { // This code draws the axes.
                 Projector.Project(new Vector3(0, 0, 1000)),
                 Projector.Project(new Vector3(0, 0, -1000)),
                 Projector.Project(new Vector3(0, 1000, 0)),
                 Projector.Project(new Vector3(0, -1000, 0)),
                 Projector.Project(new Vector3(1000, 0, 0)),
-                Projector.Project(new Vector3(-1000, 0, 0)) };
+                Projector.Project(new Vector3(-1000, 0, 0))
+            };
             Grid.Children.Add(new Line()
             {
                 X1 = 250 + 100 * axes[0].X,
@@ -82,46 +129,9 @@ namespace _3D_Graphing
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top
             }); // Everything before here was just to draw the axes.
-
-            foreach (Vector3[] keyPointGroup in keyPoints) // This loop draws the function itself.
-            {
-                Vector3[] points = new Vector3[4]
-                {
-                    Projector.Project(keyPointGroup[0]),
-                    Projector.Project(keyPointGroup[1]),
-                    Projector.Project(keyPointGroup[2]),
-                    Projector.Project(keyPointGroup[3]),
-                };
-                if (Math.Abs(points[0].Y) < 1000 && Math.Abs(points[1].Y) < 1000 && Math.Abs(points[2].Y) < 1000 && Math.Abs(points[3].Y) < 1000)
-                {
-                    Grid.Children.Add(new Line()
-                    {
-                        X1 = 250 + 100 * (points[0].X),
-                        X2 = 250 + 100 * (points[1].X),
-                        Y1 = 250 + 100 * (points[0].Y),
-                        Y2 = 250 + 100 * (points[1].Y),
-                        Stroke = Brushes.Black,
-                        StrokeThickness = 1,
-                        Opacity = 3 * Math.Exp(points[0].Z),
-                        HorizontalAlignment = HorizontalAlignment.Left,
-                        VerticalAlignment = VerticalAlignment.Top
-                    });
-                    Grid.Children.Add(new Line()
-                    {
-                        X1 = 250 + 100 * (points[2].X),
-                        X2 = 250 + 100 * (points[3].X),
-                        Y1 = 250 + 100 * (points[2].Y),
-                        Y2 = 250 + 100 * (points[3].Y),
-                        Stroke = Brushes.Black,
-                        StrokeThickness = 1,
-                        Opacity = 3 * Math.Exp(points[2].Z),
-                        HorizontalAlignment = HorizontalAlignment.Left,
-                        VerticalAlignment = VerticalAlignment.Top
-                    });
-                }
-            }
         }
-        public void ReRender(object sender, EventArgs empty)
+
+        private void ReRender(object sender, EventArgs empty)
         {
             if (keyPoints == null) return;
             Render();

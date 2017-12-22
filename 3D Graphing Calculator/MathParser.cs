@@ -157,7 +157,7 @@ namespace _3D_Graphing
 
             if (balanceOfParenth != 0)
             {
-                throw new FormatException("Number of left and right parenthesis is not equal");
+                throw new ArgumentException("Number of left and right parenthesis is not equal");
             }
 
             return formattedString.ToString();
@@ -196,7 +196,7 @@ namespace _3D_Graphing
                 }
                 else
                 {
-                    throw new FormatException("Format exception,"
+                    throw new ArgumentException("Format exception,"
                     + " there is function without parenthesis");
                 }
             }
@@ -582,10 +582,6 @@ namespace _3D_Graphing
                         rst = arg1 * arg2;
                         break;
                     case Divide:
-                        if (arg2 == 0)
-                        {
-                            throw new DivideByZeroException("Second argument is zero");
-                        }
                         rst = arg1 / arg2;
                         break;
                     case Degree:
