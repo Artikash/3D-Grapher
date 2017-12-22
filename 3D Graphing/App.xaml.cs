@@ -54,7 +54,7 @@ namespace _3D_Graphing
         public void Render() // Render the graph of the function.
         {
             var Canvas = output.Canvas;
-            Canvas.Children.RemoveRange(6,Int32.MaxValue);
+            Canvas.Children.RemoveRange(6, Int32.MaxValue);
 
             bool color = false;
             foreach (Vector3[] keyPointGroup in keyPoints) // This loop draws the function itself.

@@ -27,7 +27,8 @@ namespace _3D_Graphing
                 Convert.ToSingle(MaxX.Text),
                 Convert.ToSingle(MinY.Text), 
                 Convert.ToSingle(MaxY.Text),
-                Convert.ToSingle(Step.Text)));
+                Convert.ToSingle(Step.Text))
+            );
         }
     }
 }
