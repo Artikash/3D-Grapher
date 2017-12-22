@@ -80,6 +80,7 @@ namespace _3D_Graphing
                         },
                         Stroke = Brushes.Black,
                         StrokeThickness = 1,
+                        Opacity = 0.6,
                         Fill = color ? Brushes.LightBlue : Brushes.DarkRed,
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Top
