@@ -53,8 +53,8 @@ namespace _3D_Graphing
 
         public void Render() // Render the graph of the function.
         {
-            var Grid = output.Grid;
-            Grid.Children.RemoveRange(6,Int32.MaxValue);
+            var Canvas = output.Canvas;
+            Canvas.Children.RemoveRange(6,Int32.MaxValue);
 
             bool color = false;
             foreach (Vector3[] keyPointGroup in keyPoints) // This loop draws the function itself.
@@ -69,7 +69,7 @@ namespace _3D_Graphing
                 };
                 if (Math.Abs(points[0].Y) < 1000 && Math.Abs(points[1].Y) < 1000 && Math.Abs(points[2].Y) < 1000 && Math.Abs(points[3].Y) < 1000)
                 {
-                    Grid.Children.Add(new Polygon()
+                    Canvas.Children.Add(new Polygon()
                     {
                         Points = new PointCollection
                         {
@@ -97,7 +97,7 @@ namespace _3D_Graphing
                 Projector.Project(new Vector3(1000, 0, 0)),
                 Projector.Project(new Vector3(-1000, 0, 0))
             };
-            Grid.Children.Add(new Line()
+            Canvas.Children.Add(new Line()
             {
                 X1 = 250 + 100 * axes[0].X,
                 X2 = 250 + 100 * axes[1].X,
@@ -108,7 +108,7 @@ namespace _3D_Graphing
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top
             });
-            Grid.Children.Add(new Line()
+            Canvas.Children.Add(new Line()
             {
                 X1 = 250 + 100 * axes[2].X,
                 X2 = 250 + 100 * axes[3].X,
@@ -119,7 +119,7 @@ namespace _3D_Graphing
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top
             });
-            Grid.Children.Add(new Line()
+            Canvas.Children.Add(new Line()
             {
                 X1 = 250 + 100 * axes[4].X,
                 X2 = 250 + 100 * axes[5].X,

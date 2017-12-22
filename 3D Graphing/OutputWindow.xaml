@@ -10,13 +10,12 @@
         xmlns:local="clr-namespace:_3D_Graphing"
         mc:Ignorable="d"
         Title="Output" Height="500" Width="500" ResizeMode="NoResize">
-    <Grid x:Name="Grid">
-        <Rectangle Fill="Green" HorizontalAlignment="Left" Height="20" Margin="430,391,0,0" Stroke="Black" VerticalAlignment="Top" Width="20"/>
-        <TextBlock HorizontalAlignment="Left" Height="20" Margin="455,391,0,0" TextWrapping="Wrap" Text="X" VerticalAlignment="Top" Width="29"/>
-        <Rectangle Fill="Red" HorizontalAlignment="Left" Height="20" Margin="430,416,0,0" Stroke="Black" VerticalAlignment="Top" Width="20"/>
-        <TextBlock HorizontalAlignment="Left" Height="20" Margin="455,416,0,0" TextWrapping="Wrap" Text="Y" VerticalAlignment="Top" Width="29"/>
-        <Rectangle Fill="Blue" HorizontalAlignment="Left" Height="20" Margin="430,441,0,0" Stroke="Black" VerticalAlignment="Top" Width="20"/>
-        <TextBlock HorizontalAlignment="Left" Height="20" Margin="455,441,0,0" TextWrapping="Wrap" Text="Z" VerticalAlignment="Top" Width="29"/>
-
-    </Grid>
+    <Canvas x:Name="Canvas">
+            <Rectangle Fill="Green" HorizontalAlignment="Left" Height="20" Margin="430,391,0,0" Stroke="Black" VerticalAlignment="Top" Width="20"/>
+            <TextBlock HorizontalAlignment="Left" Height="20" Margin="455,391,0,0" TextWrapping="Wrap" Text="X" VerticalAlignment="Top" Width="29"/>
+            <Rectangle Fill="Red" HorizontalAlignment="Left" Height="20" Margin="430,416,0,0" Stroke="Black" VerticalAlignment="Top" Width="20"/>
+            <TextBlock HorizontalAlignment="Left" Height="20" Margin="455,416,0,0" TextWrapping="Wrap" Text="Y" VerticalAlignment="Top" Width="29"/>
+            <Rectangle Fill="Blue" HorizontalAlignment="Left" Height="20" Margin="430,441,0,0" Stroke="Black" VerticalAlignment="Top" Width="20"/>
+            <TextBlock HorizontalAlignment="Left" Height="20" Margin="455,441,0,0" TextWrapping="Wrap" Text="Z" VerticalAlignment="Top" Width="29"/>
+        </Canvas>
 </Window>
