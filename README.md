@@ -1,4 +1,6 @@
 # 3D-Grapher
-Graphs functions in 3D. The basics are functional (ha) but still a WIP.
+Graphs functions in 3D.
 
-You can graph most explicit functions. Currently they display as wireframes. Graphing multiple functions is possible, separate the equations with commas.
+You can graph most explicit functions. Graphing multiple functions is possible, separate the equations with commas.
+
+Click and drag mouse to rotate graph, scroll to zoom.
